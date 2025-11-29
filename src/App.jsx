@@ -5,7 +5,7 @@ WeatherBackground;
 const App = () => {
 
   const [weather, setWeather] = useState(null);
-  
+
   // this function check weather exissts or not and return and object
   const getWeatherCondition = () =>
     weather && {
