@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import WeatherBackground from "./components/WeatherBackground";
 WeatherBackground;
 import { convertTemperature } from "./components/Helper";
@@ -6,7 +6,7 @@ import { convertTemperature } from "./components/Helper";
 const App = () => {
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState("");
-  const [suggestion, setSuggestion] = useState("");
+  const [suggestion, setSuggestion] = useState([]);
   const [unit, setUnit] = useState("");
   const [error, setError] = useState("");
 
@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     if (city.trim().length >= 3 && !weather) {
       const timer = setTimeout(() => {
-        fetchSuggestions(city), 500;
+        fetchSuggestions(city);
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -47,11 +47,11 @@ const App = () => {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error((await response.json()).message || "City not found");
-        const data = await response.json();
-        setWeather(data);
-        setCity(name || data.name);
-        setSuggestion([]);
       }
+      const data = await response.json();
+      setWeather(data);
+      setCity(name || data.name);
+      setSuggestion([]);
     } catch (error) {
       setError(error.message);
     }
@@ -76,7 +76,7 @@ const App = () => {
       main: weather.weather[0].main,
       isDay:
         Date.now() / 1000 > weather.sys.sunrise &&
-        Date.now() / 1000 < weather.sys.susnset,
+        Date.now() / 1000 < weather.sys.sunset,
     };
 
   return (
@@ -89,7 +89,7 @@ const App = () => {
             Weather App
           </h1>
 
-          {weather ? (
+          {!weather ? (
             <form onSubmit={handleSearch} className="flrx flex-col relative">
               <input
                 value={city}
@@ -97,7 +97,7 @@ const App = () => {
                 placeholder="Enter City or Country"
                 className="mb-4 p-3 rounded border border-white bg-transparent text-white placeholder-white focus:outline-none focus:border-blue-300 transition duration-300"
               />{" "}
-              //minmum 3 lettrets for suggestion
+              {/* //minmum 3 lettrets for suggestion */}
               {suggestion.length > 0 && (
                 <div className="absolute top-12 left-0 right-0 bg-transparent shadow-md rounded z-10 ">
                   {suggestion.map((s) => {
@@ -157,6 +157,8 @@ const App = () => {
                 {convertTemperature(weather.main.temp, unit)} &deg;{unit}
               </p>
               <p className="capitalize">{weather.weather[0].description}</p>
+
+              <div className="flex flex-wrap jusify-around mt-6"></div>
             </div>
           )}
         </div>
