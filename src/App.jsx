@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
 import WeatherBackground from "./components/WeatherBackground";
 WeatherBackground;
-import { convertTemperature } from "./components/Helper";
+import {
+  convertTemperature,
+  getHumidityValue,
+  getVisibilityValue,
+  getWindDirection,
+} from "./components/Helper";
+import {
+  HumidityIcon,
+  SunriseIcon,
+  SunsetIcon,
+  VisibilityIcon,
+  WindIcon,
+} from "./components/Icons";
 
 const App = () => {
   const [weather, setWeather] = useState(null);
@@ -49,7 +61,7 @@ const App = () => {
         throw new Error((await response.json()).message || "City not found");
       }
       const data = await response.json();
-      console.log(data, "WeatherData from Api")
+      console.log(data, "WeatherData from Api");
       setWeather(data);
       setCity(name || data.name);
       setSuggestion([]);
@@ -159,7 +171,57 @@ const App = () => {
               </p>
               <p className="capitalize">{weather.weather[0].description}</p>
 
-              <div className="flex flex-wrap jusify-around mt-6"></div>
+              <div className="flex flex-wrap jusify-around mt-6">
+                {[
+                  [
+                    HumidityIcon,
+                    "Humidity ",
+                    `${weather.main.humidity}% (${getHumidityValue(
+                      weather.main.humidity
+                    )})`,
+                  ],
+
+                  [
+                    WindIcon,
+                    "Wind ",
+                    `${weather.wind.speed} m/s ${
+                      weather.wind.deg
+                        ? `(${getWindDirection(weather.main.humidity)})`
+                        : ""
+                    }`,
+                  ],
+
+                  [
+                    VisibilityIcon,
+                    "Visibility ",
+                    getVisibilityValue(weather.visibility),
+                  ],
+                ].map(([Icon, label, value]) => (
+                  <div key={label} className="flex flex-col items-center m-2">
+                    <Icon />
+                    <p className="mt-1 font-semibold">{label}</p>
+                    <p className="text-sm">{value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap justify-around mt-6">
+                {[
+                  [SunriseIcon, "Sunrise", weather.sys.sunrise],
+                  [SunsetIcon, "Sunset", weather.sys.sunset],
+                ].map(([Icon, label, time]) => (
+                  <div key={label} className="flex flex-col items-center m-2">
+                    <Icon />
+                    <p className="mt-1 font-semibold">{label}</p>
+                    <p className="text-sm ">
+                      {new Date(time * 1000).toLocaleDateString("en-GV", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
