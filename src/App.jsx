@@ -126,7 +126,7 @@ const App = () => {
                         );
                       }}
                       className="block hover:bg-blue-700 bg-transparent px-4 py-2 text-sm text-left w-full transition-colors"
-                    >
+                    > 
                       {s.name},{s.country}, {s.state && `, ${s.state}`}
                     </button>;
                   })}
