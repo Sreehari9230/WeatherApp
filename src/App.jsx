@@ -7,14 +7,14 @@ const App = () => {
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState("");
   const [suggestion, setSuggestion] = useState([]);
-  const [unit, setUnit] = useState("");
+  const [unit, setUnit] = useState("C");
   const [error, setError] = useState("");
 
   const API_KEY = "2e293f16e901d3dfc9e3fd738a7006a4";
 
   // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API_KEY}
 
-  // http://api.openweathermap.org/geo/1.0/direct?q={query}&limit={5}&appid={API_KEY}
+  // http://api.openweathermap.org/geo/1.0/direct?q={query}&limit={5}&appid={API_KEY} -- suggestions
 
   useEffect(() => {
     if (city.trim().length >= 3 && !weather) {
@@ -49,6 +49,7 @@ const App = () => {
         throw new Error((await response.json()).message || "City not found");
       }
       const data = await response.json();
+      console.log(data, "WeatherData from Api")
       setWeather(data);
       setCity(name || data.name);
       setSuggestion([]);
@@ -90,7 +91,7 @@ const App = () => {
           </h1>
 
           {!weather ? (
-            <form onSubmit={handleSearch} className="flrx flex-col relative">
+            <form onSubmit={handleSearch} className="flex flex-col relative">
               <input
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
