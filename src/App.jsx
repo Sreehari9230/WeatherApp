@@ -164,7 +164,6 @@ const App = () => {
               <img
                 // src={`https://api.openweathermap.org/img/wm/${weather.weather[0].icon}@2px.png`}
                 src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-
                 alt={weather.weather[0].description}
                 className="mx-auto my-4 animate-bounce"
               />
@@ -224,8 +223,20 @@ const App = () => {
                   </div>
                 ))}
               </div>
+
+              <div className=" mt-6 text-sm ">
+                <p>
+                  <strong>Feels Like: </strong>
+                  {convertTemperature(weather.main.feels_like, unit)}&deg;{unit}
+                </p>
+                <p>
+                  <strong>Pressure:</strong> {weather.main.pressure} hPa
+                </p>
+              </div>
             </div>
           )}
+
+          {error && <p className="text-red-400 text-center mt-4">{error}</p>}
         </div>
       </div>
     </div>
