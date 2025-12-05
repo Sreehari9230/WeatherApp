@@ -119,7 +119,7 @@ const App = () => {
                       key={`${s.lat} - ${s.lon}`}
                       onClick={() => {
                         fetchWeatherData(
-                          `https://api.openweathermap.org/data/2.5/weather?lat=${s.lat}&lon=${s.lon}&appid={API_KEY}&units=metric`,
+                          `https://api.openweathermap.org/data/2.5/weather?lat=${s.lat}&lon=${s.lon}&appid={API_KEY}&units=metric`, 
                           `${s.name}, ${s.country}, ${
                             s.state ? `${s.state}` : ""
                           }`
