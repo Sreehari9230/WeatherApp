@@ -22,7 +22,7 @@ const App = () => {
   const [unit, setUnit] = useState("C");
   const [error, setError] = useState("");
 
-  const API_KEY = "2e293f16e901d3dfc9e3fd738a7006a4";
+  const API_KEY = import.meta.env.VITE_API_KEY; //this is still not safe because its a public api its alright any one can see it thorugh network tab
 
   // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API_KEY}
 
@@ -119,14 +119,14 @@ const App = () => {
                       key={`${s.lat} - ${s.lon}`}
                       onClick={() => {
                         fetchWeatherData(
-                          `https://api.openweathermap.org/data/2.5/weather?lat=${s.lat}&lon=${s.lon}&appid={API_KEY}&units=metric`, 
+                          `https://api.openweathermap.org/data/2.5/weather?lat=${s.lat}&lon=${s.lon}&appid={API_KEY}&units=metric`,
                           `${s.name}, ${s.country}, ${
                             s.state ? `${s.state}` : ""
                           }`
                         );
                       }}
                       className="block hover:bg-blue-700 bg-transparent px-4 py-2 text-sm text-left w-full transition-colors"
-                    > 
+                    >
                       {s.name},{s.country}, {s.state && `, ${s.state}`}
                     </button>;
                   })}
